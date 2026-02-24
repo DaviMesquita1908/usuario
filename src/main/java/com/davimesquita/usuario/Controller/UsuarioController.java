@@ -1,5 +1,7 @@
 package com.davimesquita.usuario.Controller;
 
+import com.davimesquita.usuario.Business.Dto.EnderecoDTO;
+import com.davimesquita.usuario.Business.Dto.TelefoneDTO;
 import com.davimesquita.usuario.Business.Dto.UsuarioDTO;
 import com.davimesquita.usuario.Business.UsuarioService;
 import com.davimesquita.usuario.infrastructure.Entity.Usuario;
@@ -37,7 +39,7 @@ public class UsuarioController {
     }
 
     @GetMapping
-    public ResponseEntity<Usuario> buscaUsuarioPorEmail(@RequestParam("email") String email) {
+    public ResponseEntity<UsuarioDTO> buscaUsuarioPorEmail(@RequestParam("email") String email) {
         return ResponseEntity.ok(usuarioService.buscarUsuarioPorEmail(email));
     }
 
@@ -46,4 +48,23 @@ public class UsuarioController {
         usuarioService.deletaUsuarioPorEmail(email);
         return ResponseEntity.ok().build();
     }
+
+    @PutMapping
+    public ResponseEntity<UsuarioDTO> atualizaDadosUsuario(@RequestBody UsuarioDTO dto,
+                                                           @RequestHeader("Authorization") String token) {
+        return ResponseEntity.ok(usuarioService.atualizaDadosUsuario(token, dto));
+    }
+
+    @PutMapping("/endereco")
+    public ResponseEntity<EnderecoDTO> atualizaEndereco(@RequestBody EnderecoDTO dto,
+                                                        @RequestParam("id") Long id) {
+        return ResponseEntity.ok(usuarioService.atualizaEndereco(id, dto));
+    }
+
+    @PutMapping("/telefone")
+    public ResponseEntity<TelefoneDTO> atualizaTelefone(@RequestBody TelefoneDTO dto,
+                                                        @RequestParam("id") Long id) {
+        return ResponseEntity.ok(usuarioService.atualizaTelefone(id, dto));
+    }
+
 }
